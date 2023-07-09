@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to Catalog 
+  .content
+    h2= title
+    ul 
+      each category in categories
+        li #{category} : #{category.length}

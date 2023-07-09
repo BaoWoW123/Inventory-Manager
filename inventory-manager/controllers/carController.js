@@ -1,12 +1,14 @@
 const Car = require('../models/car');
 const asyncHandler = require('express-async-handler');
+const categories = ['Cars','Makes','Models','Years'] //test view input
 
 exports.index = asyncHandler(async (req, res, next) => {
-    res.send('Not here yet: Site home page')
+    res.render('catalog', {title: 'Home', categories:categories})
 })
 
 exports.car_list = asyncHandler(async(req,res,next) => {
-    res.send('Car List')
+    const car_list = await Car.find()
+    res.render('car_list', {title:'Cars', car_list:car_list})
 })
 
 exports.car_detail = asyncHandler(async(req,res,next) => {

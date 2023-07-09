@@ -1,8 +1,54 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: linear-gradient(white, lightgray) ;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+body > h1:first-child {
+  padding: 20px 100px;
+}
+.links li {
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+ul,li, h1 {
+  padding: 0;
+  margin:0;
+}
+ul {
+  text-decoration: none;
+  list-style: none;
 }
 
 a {
   color: #00B7FF;
+  font-size:larger;
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+}
+
+.content {
+  grid-column: 2/3;
+}
+
+.carList {
+  padding: 0px 20px;
+}
+
+.carList li {
+  border-bottom: 1px solid black;
+}
+
+.carList li p, .carlist div {
+  padding: 10px;
+}
+
+.carList div {
+  display: flex;
 }

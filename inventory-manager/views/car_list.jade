@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .content
+    h1= title
+    ul(class='carList')
+      each car in car_list
+        li
+          h3 #{car.year} #{car.make} #{car.model}
+          div 
+            p=car.bodyType
+            p Price: $#{car.price}
+            p Stock: #{car.stock}
+          p=car.description
