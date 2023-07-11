@@ -37,18 +37,18 @@ a {
   grid-column: 2/3;
 }
 
-.carList {
+.contentList {
   padding: 0px 20px;
 }
 
-.carList li {
+.contentList li {
   border-bottom: 1px solid black;
 }
 
-.carList li p, .carlist div {
+.contentList li p, .contentList div {
   padding: 10px;
 }
 
-.carList div {
+.contentList div {
   display: flex;
 }

@@ -2,7 +2,8 @@ const Year = require('../models/year');
 const asyncHandler = require('express-async-handler');
 
 exports.year_list = asyncHandler(async(req,res,next) => {
-    res.send('Year List')
+    const year_list = await Year.find().sort({year:-1})
+    res.render('year_list', {title:'Years', year_list:year_list})
 })
 
 exports.year_detail = asyncHandler(async(req,res,next) => {

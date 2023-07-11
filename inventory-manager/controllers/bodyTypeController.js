@@ -2,7 +2,8 @@ const BodyType = require('../models/bodyType');
 const asyncHandler = require('express-async-handler');
 
 exports.bodyType_list = asyncHandler(async(req,res,next) => {
-    res.send('bodyType List')
+    const bodyType_list = await BodyType.find()
+    res.render('bodyType_list', {title:'Body Types', bodyType_list:bodyType_list})
 })
 
 exports.bodyType_detail = asyncHandler(async(req,res,next) => {

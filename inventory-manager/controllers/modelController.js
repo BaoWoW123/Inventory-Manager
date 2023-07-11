@@ -2,7 +2,8 @@ const Model = require('../models/model');
 const asyncHandler = require('express-async-handler');
 
 exports.model_list = asyncHandler(async(req,res,next) => {
-    res.send('model List')
+    const model_list = await Model.find().sort({name:1})
+    res.render('model_list', {title:'Models', model_list:model_list})
 })
 
 exports.model_detail = asyncHandler(async(req,res,next) => {

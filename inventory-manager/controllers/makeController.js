@@ -2,7 +2,8 @@ const Make = require('../models/make');
 const asyncHandler = require('express-async-handler');
 
 exports.make_list = asyncHandler(async(req,res,next) => {
-    res.send('Make List')
+    const make_list = await Make.find().sort({name:1})
+    res.render('make_list', {title:'Makes', make_list:make_list})
 })
 
 exports.make_detail = asyncHandler(async(req,res,next) => {

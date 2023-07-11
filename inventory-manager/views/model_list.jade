@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .content
+    h1= title
+    ul(class='contentList')
+      each model in model_list
+        li
+          h3=model.name

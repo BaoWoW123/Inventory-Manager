@@ -21,4 +21,4 @@ CarSchema.virtual('name').get(function() {
     }
 })
 
-module.exports = mongoose.model('Car', CarSchema);
+module.exports = mongoose.model('cars', CarSchema);

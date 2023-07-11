@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  .content
+    h1= title
+    ul(class='contentList')
+      each bodyType in bodyType_list
+        li
+          h3=bodyType.type
+          p=bodyType.description
