@@ -6,4 +6,5 @@ block content
     ul(class='contentList')
       each year in year_list
         li
-          h3=year.year
+          a(href=year.url)
+            h3=year.year

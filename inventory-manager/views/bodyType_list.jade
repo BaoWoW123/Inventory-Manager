@@ -6,5 +6,6 @@ block content
     ul(class='contentList')
       each bodyType in bodyType_list
         li
-          h3=bodyType.type
+          a(href=bodyType.url)
+            h3=bodyType.type
           p=bodyType.description

@@ -6,4 +6,5 @@ block content
     ul(class='contentList')
       each model in model_list
         li
-          h3=model.name
+          a(href=model.url)
+            h3=model.name

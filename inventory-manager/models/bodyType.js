@@ -11,4 +11,4 @@ BodyTypeSchema.virtual('url').get(function() {
     return `/catalog/bodytype/${this._id}`;
 })
 
-module.exports = mongoose.model('bodyType', BodyTypeSchema, 'bodyTypes');
+module.exports = mongoose.model('Bodytype', BodyTypeSchema, 'bodyTypes');

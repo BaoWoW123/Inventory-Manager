@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
+const Make = require('./make')
 
 const Schema = mongoose.Schema;
 
 const CarSchema = new Schema({
-    make: {type:String, required: true, minlength:3, maxLength:50},
-    model: {type:String, required: true, minlength:3, maxLength:50},
-    bodyType: {type:String, required: true, minlength:3, maxLength:50},
+    make: {type:Schema.ObjectId, required: true, ref:'Make'},
+    model: {type:Schema.ObjectId, required: true, ref:'Model'},
+    bodyType: {type:Schema.ObjectId, ref:'Bodytype'},
     price: {type:Number, required: true},
-    year: {type: Number, required: true, max:9999},
+    year: {type:Schema.ObjectId, required: true, ref:'Year'},
     description: {type:String, minlength:3, maxLength:200},
     stock: {type:String,required:true, enum:['Available', 'Unavailable'], default:'Available'}
 })
@@ -15,10 +16,9 @@ const CarSchema = new Schema({
 CarSchema.virtual('url').get(function() {
     return `/catalog/car/${this._id}`
 })
-CarSchema.virtual('name').get(function() {
-    if (this.make && this.model) {
-        return `${this.make} ${this.model}`;
-    }
+CarSchema.virtual('name').get(async function() {
+    let model = await Make.findById(this._id).populate('make').exec();
+    return `${model}`;
 })
 
-module.exports = mongoose.model('cars', CarSchema);
+module.exports = mongoose.model('Car', CarSchema);

@@ -6,5 +6,6 @@ block content
     ul(class='contentList')
       each make in make_list
         li
-          h3=make.name 
+          a(href=make.url)
+            h3=make.name
           p Est. #{make.year_founded}

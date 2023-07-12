@@ -1,6 +1,6 @@
 body {
   font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: linear-gradient(white, lightgray) ;
+  background: linear-gradient(white, lightgray);
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -9,14 +9,16 @@ body {
 body > h1:first-child {
   padding: 20px 100px;
 }
-.links li {
+.links > li {
   text-align: center;
   padding: 10px;
   font-weight: bold;
 }
-ul,li, h1 {
+ul,
+li,
+h1 {
   padding: 0;
-  margin:0;
+  margin: 0;
 }
 ul {
   text-decoration: none;
@@ -24,8 +26,8 @@ ul {
 }
 
 a {
-  color: #00B7FF;
-  font-size:larger;
+  color: #00b7ff;
+  font-size: larger;
 }
 
 .contentWrapper {
@@ -41,14 +43,23 @@ a {
   padding: 0px 20px;
 }
 
-.contentList li {
+.contentList > li {
   border-bottom: 1px solid black;
 }
 
-.contentList li p, .contentList div {
-  padding: 10px;
+.contentList > li > div > div {
+  padding: 20px;
+  padding-top:0px;
 }
 
 .contentList div {
   display: flex;
+}
+.detail>div:first-child {
+ background-color: #00b7ff;
+}
+
+.detail > h1 {
+  border-bottom:1px solid black;
+  padding-bottom: 10px;
 }

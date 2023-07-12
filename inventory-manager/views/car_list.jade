@@ -6,9 +6,10 @@ block content
     ul(class='contentList')
       each car in car_list
         li
-          h3 #{car.year} #{car.make} #{car.model}
+          a(href=car.url)
+            h3 #{car.year.year} #{car.make.name} #{car.model.name}
           div 
-            p=car.bodyType
-            p Price: $#{car.price}
-            p Stock: #{car.stock}
+            div=car.bodyType.type
+            div Price: $#{car.price}
+            div Stock: #{car.stock}
           p=car.description

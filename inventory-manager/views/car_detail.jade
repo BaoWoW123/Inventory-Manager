@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1 #{car.year.year} #{car.make.name} #{car.model.name}
+        div(style='display:flex; gap:20px; padding:10px')
+          p Stock: #{car.stock}
+          p Price: #{car.price}
+        p=car.description
+        div Cars by 
+         a(href=car.make.url) #{car.make.name}
+        div Cars released in 
+          a(href=car.year.url) #{car.year.year}
+        div See all  
+          a(href=car.model.url) #{car.model.name} models
+
+    
