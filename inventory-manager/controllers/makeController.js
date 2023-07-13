@@ -1,4 +1,5 @@
 const Make = require('../models/make');
+const Car = require('../models/car');
 const asyncHandler = require('express-async-handler');
 
 exports.make_list = asyncHandler(async(req,res,next) => {
@@ -7,7 +8,19 @@ exports.make_list = asyncHandler(async(req,res,next) => {
 })
 
 exports.make_detail = asyncHandler(async(req,res,next) => {
-    res.send(`make Detail ${req.params.id}`)
+    const [make, cars] = await Promise.all([
+      Make.findById(req.params.id),
+      Car.find({make:req.params.id})
+      .populate([
+        { path: "make", select: "name" },
+        { path: "model", select: "name" },
+        { path: "year", select: "year" },
+        { path: "bodyType", select: "type"},
+      ])
+      .sort({make:1, model:1})
+      .exec()
+    ])
+    res.render('make_detail', {make_detail:make, cars:cars})
 })
 exports.make_create_get = asyncHandler(async (req, res, next) => {
     res.send('Make Create GET')

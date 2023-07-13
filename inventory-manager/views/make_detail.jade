@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=make_detail.name 
+        p Founded in #{make_detail.year_founded}
+        p=make_detail.description
+        div(style='display:flex; gap:20px; padding:10px')
+        ul
+          each car in cars 
+            li
+              h2  
+                a(href=car.url) #{car.make.name} #{car.model.name}
+              p Released: #{car.year.year}
+                div Stock: #{car.stock}
+
+    

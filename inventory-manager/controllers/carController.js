@@ -13,11 +13,12 @@ exports.index = asyncHandler(async (req, res, next) => {
 exports.car_list = asyncHandler(async (req, res, next) => {
   const car_list = await Car.find()
     .populate([
-      { path: "make", select: "name -_id" },
-      { path: "model", select: "name -_id" },
-      { path: "year", select: "year -_id" },
-      { path: "bodyType", select: "type -_id" },
+      { path: "make", select: "name" },
+      { path: "model", select: "name" },
+      { path: "year", select: "year" },
+      { path: "bodyType", select: "type"},
     ])
+    .sort({make:1, model:1})
     .exec();
   res.render("car_list", { title: "Cars", car_list: car_list });
 });
@@ -25,12 +26,7 @@ exports.car_list = asyncHandler(async (req, res, next) => {
 exports.car_detail = asyncHandler(async (req, res, next) => {
   const [car] = await Promise.all([
     Car.findById(req.params.id)
-      .populate([
-        { path: "make", select: "-_id" },
-        { path: "model", select: "-_id" },
-        { path: "year", select: "-_id" },
-        { path: "bodyType", select: "-_id" },
-      ])
+      .populate(["make","model","year","bodyType"])
       .exec(),
   ]);
   res.render("car_detail", {

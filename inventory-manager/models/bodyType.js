@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const BodyTypeSchema = new Schema({
     type: {type:String, required: true, minlength:3, maxLength:20},
-    description: {type: String, required: true, minlength:3, maxLength: 200},
+    description: {type: String, required: true, minlength:3, maxLength: 500},
 })
 
 BodyTypeSchema.virtual('url').get(function() {

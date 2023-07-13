@@ -4,6 +4,10 @@ block content
   .content
     .detail   
         h1 #{car.year.year} #{car.make.name} #{car.model.name}
+        p Body types:&nbsp
+          each type, idx in car.bodyType
+            a(href=type.url) #{type.type}
+            | 
         div(style='display:flex; gap:20px; padding:10px')
           p Stock: #{car.stock}
           p Price: #{car.price}

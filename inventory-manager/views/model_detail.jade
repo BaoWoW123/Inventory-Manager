@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=model_detail.name 
+        div(style='display:flex; gap:20px; padding:10px')
+        ul
+          each car in cars 
+            li
+              h2  
+                a(href=car.url) #{car.make.name} #{car.model.name}
+              p Released: 
+                b #{car.year.year}
+                div Stock: #{car.stock}
+
+    

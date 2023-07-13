@@ -1,4 +1,5 @@
 const BodyType = require('../models/bodyType');
+const Car = require('../models/car')
 const asyncHandler = require('express-async-handler');
 
 exports.bodyType_list = asyncHandler(async(req,res,next) => {
@@ -7,7 +8,20 @@ exports.bodyType_list = asyncHandler(async(req,res,next) => {
 })
 
 exports.bodyType_detail = asyncHandler(async(req,res,next) => {
-    res.send(`bodyType Detail ${req.params.id}`)
+    const [bodyType, cars] = await Promise.all([
+        BodyType.findById(req.params.id),
+        Car.find({bodyType: req.params.id})
+        .populate([
+            'make',
+            'model',
+            'year',
+            'stock',
+        ])
+        .sort({make: 1, model: 1})
+        .exec()
+    ]) 
+
+    res.render('bodyType_detail', {bodyType_detail:bodyType, cars:cars})
 })
 exports.bodyType_create_get = asyncHandler(async (req, res, next) => {
     res.send('bodyType Create GET')

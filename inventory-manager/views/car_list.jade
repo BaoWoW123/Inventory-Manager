@@ -9,7 +9,13 @@ block content
           a(href=car.url)
             h3 #{car.year.year} #{car.make.name} #{car.model.name}
           div 
-            div=car.bodyType.type
+            div Body types:&nbsp
+              each type, idx in car.bodyType
+                div 
+                  if idx == car.bodyType.length - 1
+                    | #{type.type} 
+                  else 
+                    | #{type.type},&nbsp
             div Price: $#{car.price}
             div Stock: #{car.stock}
           p=car.description
