@@ -7,7 +7,7 @@ html
     h1 Car Inventory 
     .contentWrapper
       div(class='navBar')
-        ul(class='links')
+        ul
           li
             a(href='/catalog') Home 
           li
@@ -20,5 +20,16 @@ html
             a(href='/catalog/years') Years
           li
             a(href='/catalog/makes') Make
+        ul
+          li
+            a(href='/catalog/car/create') Create Car
+          li
+            a(href='/catalog/bodyType/create') Create BodyType
+          li
+            a(href='/catalog/model/create') Create Model
+          li
+            a(href='/catalog/year/create') Create Year
+          li
+            a(href='/catalog/make/create') Create Make
       block content
         .content

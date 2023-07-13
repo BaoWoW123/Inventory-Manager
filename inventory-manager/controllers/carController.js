@@ -4,10 +4,25 @@ const Year = require("../models/year");
 const Make = require("../models/make");
 const Model = require("../models/model");
 const asyncHandler = require("express-async-handler");
-const categories = ["Cars", "Makes", "Models", "Years"]; //test view input
+const { body, validationResult } = require("express-validator");
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.render("catalog", { title: "Home", categories: categories });
+  const [carCount, makeCount, modelCount, yearCount, bodyTypeCount] =
+    await Promise.all([
+      Car.countDocuments().exec(),
+      Make.countDocuments().exec(),
+      Model.countDocuments().exec(),
+      Year.countDocuments().exec(),
+      BodyType.countDocuments().exec(),
+    ]);
+  res.render("catalog", {
+    title: "Home",
+    carCount: carCount,
+    makeCount: makeCount,
+    modelCount: modelCount,
+    yearCount: yearCount,
+    bodyTypeCount: bodyTypeCount,
+  });
 });
 
 exports.car_list = asyncHandler(async (req, res, next) => {
@@ -16,9 +31,9 @@ exports.car_list = asyncHandler(async (req, res, next) => {
       { path: "make", select: "name" },
       { path: "model", select: "name" },
       { path: "year", select: "year" },
-      { path: "bodyType", select: "type"},
+      { path: "bodyType", select: "type" },
     ])
-    .sort({make:1, model:1})
+    .sort({ make: 1, model: 1 })
     .exec();
   res.render("car_list", { title: "Cars", car_list: car_list });
 });
@@ -26,7 +41,7 @@ exports.car_list = asyncHandler(async (req, res, next) => {
 exports.car_detail = asyncHandler(async (req, res, next) => {
   const [car] = await Promise.all([
     Car.findById(req.params.id)
-      .populate(["make","model","year","bodyType"])
+      .populate(["make", "model", "year", "bodyType"])
       .exec(),
   ]);
   res.render("car_detail", {
@@ -35,7 +50,8 @@ exports.car_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.car_create_get = asyncHandler(async (req, res, next) => {
-  res.send("Car Create GET");
+    
+  res.render("car_form", {title:'Create Car'});
 });
 
 exports.car_create_post = asyncHandler(async (req, res, next) => {

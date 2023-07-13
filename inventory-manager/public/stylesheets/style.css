@@ -9,7 +9,14 @@ body {
 body > h1:first-child {
   padding: 20px 100px;
 }
-.links > li {
+
+.navBar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.navBar > ul > li {
   text-align: center;
   padding: 10px;
   font-weight: bold;
@@ -55,11 +62,12 @@ a {
 .contentList div {
   display: flex;
 }
-.detail>div:first-child {
- background-color: #00b7ff;
-}
 
-.detail > h1 {
+.detail > h1,.form >h1 {
   border-bottom:1px solid black;
   padding-bottom: 10px;
+}
+
+form {
+  padding: 20px;
 }
