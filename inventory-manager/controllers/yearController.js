@@ -1,6 +1,7 @@
 const Year = require('../models/year');
 const Car = require('../models/car')
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require("express-validator");
 
 exports.year_list = asyncHandler(async(req,res,next) => {
     const year_list = await Year.find().sort({year:-1})
@@ -24,12 +25,42 @@ exports.year_detail = asyncHandler(async(req,res,next) => {
 })
 
 exports.year_create_get = asyncHandler(async (req, res, next) => {
-    res.send('Year Create GET')
+    res.render('year_form', {title: 'Create Year'})
 })
 
-exports.year_create_post = asyncHandler(async (req, res, next) => {
-    res.send('Year Create POST')
-})
+exports.year_create_post = [
+    body("year", "Must be a number between 1 to 9999")
+      .trim()
+      .isLength({ min: 1, max: 9999 })
+      .escape(),
+
+    asyncHandler(async (req, res, next) => {
+      const errors = validationResult(req);
+      const year = new Year({
+        year: req.body.year,
+      });
+  
+      if (!errors.isEmpty()) {
+        //if errors, rerender with errors shown
+        res.render("year_form", {
+          title: "Create Year",
+          year: year,
+          errors: errors.array(),
+        });
+        return;
+      } else {
+        const yearExists = await Year.findOne({
+          year: req.body.year,
+        }).exec();
+        if (yearExists) {
+          res.redirect(yearExists.url);
+        } else {
+          await year.save();
+          res.redirect(year.url);
+        }
+      }
+    }),
+  ];
 
 exports.year_delete_get = asyncHandler(async (req, res, next) => {
     res.send('Year Delete GET')

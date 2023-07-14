@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const CarSchema = new Schema({
     make: {type:Schema.ObjectId, required: true, ref:'Make'},
     model: {type:Schema.ObjectId, required: true, ref:'Model'},
-    bodyType: {type:[Schema.ObjectId], ref:'Bodytype'},
+    bodyType: {type:[Schema.ObjectId], required: true, ref:'Bodytype'},
     price: {type:Number, required: true},
     year: {type:Schema.ObjectId, required: true, ref:'Year'},
     description: {type:String, minlength:3, maxLength:500},

@@ -1,6 +1,7 @@
 const Model = require('../models/model');
 const Car = require('../models/car')
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require("express-validator");
 
 exports.model_list = asyncHandler(async(req,res,next) => {
     const model_list = await Model.find().sort({name:1})
@@ -24,13 +25,42 @@ exports.model_detail = asyncHandler(async(req,res,next) => {
 })
 
 exports.model_create_get = asyncHandler(async (req, res, next) => {
-    res.send('model Create GET')
+    res.render('model_form', {title: 'Create Model'})
 })
 
-exports.model_create_post = asyncHandler(async (req, res, next) => {
-    res.send('model Create POST')
-})
+exports.model_create_post = [
+    body("name", "Make must have between 3 to 20 characters")
+      .trim()
+      .isLength({ min: 3, max: 20 })
+      .escape(),
 
+    asyncHandler(async (req, res, next) => {
+      const errors = validationResult(req);
+      const model = new Model({
+        name: req.body.name,
+      });
+  
+      if (!errors.isEmpty()) {
+        //if errors, rerender with errors shown
+        res.render("model_form", {
+          title: "Create Model",
+          model: model,
+          errors: errors.array(),
+        });
+        return;
+      } else {
+        const modelExists = await Model.findOne({
+          name: req.body.name,
+        }).exec();
+        if (modelExists) {
+          res.redirect(modelExists.url);
+        } else {
+          await model.save();
+          res.redirect(model.url);
+        }
+      }
+    }),
+  ];
 exports.model_delete_get = asyncHandler(async (req, res, next) => {
     res.send('model Delete GET')
 })

@@ -1,0 +1,59 @@
+extends layout 
+
+block content 
+  .form 
+    h1=title 
+
+    form(method='POST' action='')
+      div
+        label(for='make') Make: 
+        select(type='select' name="make" placeholder='Select make' required='true') 
+          - makes.sort()
+          for make in makes     
+            if car 
+              option(value=make._id selected=(make._id.toString() === car.make._id.toString() ? 'selected' : false)) #{make.name}
+            else 
+              option(value=make._id) #{make.name}
+      div
+        label(for='model') Model: 
+        select(type='select' name="model" placeholder='Select model' required='true') 
+          - models.sort()
+          for model in models     
+            if car 
+              option(value=model._id selected=(model._id.toString() === car.model._id.toString() ? 'selected' : false)) #{model.name}
+            else 
+              option(value=model._id) #{model.name}
+      div
+        label(for='year') Year: 
+        select(type='select' name="year" placeholder='Select year' required='true') 
+          - years.sort()
+          for year in years     
+            if car 
+              option(value=year._id selected=(year._id.toString() === car.year._id.toString() ? 'selected' : false)) #{year.year}
+            else 
+              option(value=year._id) #{year.year}
+      div 
+        label(for='price') Price: 
+          input(type='number', name='price', min=1, max=9999999, value=(undefined===car ? '' : car.price))
+      div 
+        label Body types: 
+        div 
+          for bodyType in bodyTypes
+            div(style='display: inline')
+              input(type='checkbox', name='bodyType', value=bodyType._id, checked=bodyType.checked)
+              label(for=bodyType._id) #{bodyType.type}
+      div 
+        label(for='stock') Stock: 
+        select(type='select', name='stock') 
+          option(value='Available' selected=(undefined===car || car.stock!='Unavailable' ? false:'selected')) Available
+          option(value='Unavailable' selected=(undefined===car || car.stock!='Available' ? false:'selected')) Unavailable
+      div
+        label(for='description') Description: 
+        input(type='text', placeholder='Description here...' name='description' value=(undefined===car ? '' : car.description))
+      button(type='submit') Submit 
+
+
+    if errors 
+      ul
+        for error in errors 
+          li!=error.msg

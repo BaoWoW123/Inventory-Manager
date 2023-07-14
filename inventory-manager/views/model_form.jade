@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+  .form 
+    h1=title 
+
+    form(method='POST' action='')
+      div
+        label(for='name') Name: 
+        input(type='text', placeholder='Civic, Accord, etc.' name='name' value=(undefined===model ? '' : model.name))
+      button(type='submit') Submit 
+
+    if errors 
+      ul
+        for error in errors 
+          li!=error.msg
