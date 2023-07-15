@@ -63,12 +63,39 @@ exports.year_create_post = [
   ];
 
 exports.year_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('Year Delete GET')
-})
+  const [year, carsWithYear] = await Promise.all([
+    Year.findById(req.params.id).exec(),
+    Car.find({ year: req.params.id })
+      .populate(["make", "model", "year"])
+      .exec(),
+  ]);
+  if (!year) return res.redirect("/catalog/years");
+  res.render("year_delete", {
+    title: "Delete Year",
+    year: year,
+    carsWithYear: carsWithYear,
+  });
+});
 
 exports.year_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('Year Delete POST')
-})
+  const [year, carsWithYear] = await Promise.all([
+    Year.findById(req.params.id).exec(),
+    Car.find({ year: req.params.id })
+      .populate(["make", "model", "year"])
+      .exec(),
+  ]);
+  //rechecks if cars has no connection to this year
+  if (carsWithYear.length) {
+    return res.render("year_delete", {
+      title: "Delete Year",
+      year: year,
+      carsWithYear: carsWithYear,
+    });
+  } else {
+    await Year.findByIdAndRemove(req.body.yearId);
+    res.redirect("/catalog/years");
+  }
+});
 
 exports.year_update_get = asyncHandler(async (req, res, next) => {
     res.send('Year Update GET')

@@ -75,13 +75,31 @@ exports.make_create_post = [
 ];
 
 exports.make_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("Make Delete GET");
+    const [make, carsWithMake] = await Promise.all([
+        Make.findById(req.params.id).exec(),
+        Car.find({make: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    if (!make) return res.redirect('/catalog/makes');
+  res.render("make_delete",{title:'Delete Make', make:make, carsWithMake: carsWithMake});
 });
 
 exports.make_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("Make Delete POST");
+    const [make, carsWithMake] = await Promise.all([
+        Make.findById(req.params.id).exec(),
+        Car.find({make: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    //rechecks if cars has no connection to this make
+    if (carsWithMake.length) {
+      return res.render("make_delete",{title:'Delete Make', make:make, carsWithMake: carsWithMake});
+    } else {
+        await Make.findByIdAndRemove(req.body.makeId)
+        res.redirect("/catalog/makes");
+    }
 });
-
 exports.make_update_get = asyncHandler(async (req, res, next) => {
   res.send("Make Update GET");
 });

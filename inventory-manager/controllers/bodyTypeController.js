@@ -67,11 +67,30 @@ exports.bodyType_create_post = [
 ];
 
 exports.bodyType_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("bodyType Delete GET");
+    const [bodyType, carsWithType] = await Promise.all([
+        BodyType.findById(req.params.id).exec(),
+        Car.find({bodyType: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    if (!bodyType) return res.redirect('/catalog/bodytypes');
+  res.render("bodyType_delete",{title:'Delete Body Type', bodyType:bodyType, carsWithType: carsWithType});
 });
 
 exports.bodyType_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("bodyType Delete POST");
+    const [bodyType, carsWithType] = await Promise.all([
+        BodyType.findById(req.params.id).exec(),
+        Car.find({bodyType: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    //rechecks if cars has no connection to this bodyType
+    if (carsWithType.length) {
+      return res.render("bodyType_delete",{title:'Delete Body Type', bodyType:bodyType, carsWithType: carsWithType});
+    } else {
+        await BodyType.findByIdAndRemove(req.body.bodyTypeId)
+        res.redirect("/catalog/bodytypes");
+    }
 });
 
 exports.bodyType_update_get = asyncHandler(async (req, res, next) => {

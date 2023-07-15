@@ -126,11 +126,15 @@ exports.car_create_post = [
 ];
 
 exports.car_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("Car Delete GET");
+    const car = await Car.findById(req.params.id).populate(['make','model','year', 'bodyType']).exec();
+    if (!car) return res.redirect('/catalog/cars');
+  res.render("car_delete",{title:'Delete Body Type', car:car, });
 });
 
 exports.car_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("Car Delete POST");
+    await Car.findByIdAndRemove(req.body.carId)
+    res.redirect("/catalog/cars");
+    
 });
 
 exports.car_update_get = asyncHandler(async (req, res, next) => {

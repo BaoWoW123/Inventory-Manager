@@ -62,11 +62,30 @@ exports.model_create_post = [
     }),
   ];
 exports.model_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('model Delete GET')
+    const [model, carsWithModel] = await Promise.all([
+        Model.findById(req.params.id).exec(),
+        Car.find({model: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    if (!model) return res.redirect('/catalog/models');
+  res.render("model_delete",{title:'Delete Model', model:model, carsWithModel: carsWithModel});
 })
 
 exports.model_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('model Delete POST')
+    const [model, carsWithModel] = await Promise.all([
+        Model.findById(req.params.id).exec(),
+        Car.find({model: req.params.id})
+          .populate(['make','model','year'])
+          .exec(),
+    ])
+    //rechecks if cars has no connection to this model
+    if (carsWithModel.length) {
+      return res.render("model_delete",{title:'Delete Model', model:model, carsWithModel: carsWithModel});
+    } else {
+        await Model.findByIdAndRemove(req.body.modelId)
+        res.redirect("/catalog/models");
+    }
 })
 
 exports.model_update_get = asyncHandler(async (req, res, next) => {

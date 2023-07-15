@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=bodyType.type
+        div(style='display:flex; gap:20px; padding:10px')
+          p=bodyType.description
+        if carsWithType.length
+          ul 
+            h3 Remove or update the following cars with this body type before deleting.
+            each car in carsWithType   
+              li
+                a(href=car.url) 
+                  h3 #{car.year.year} #{car.make.name} #{car.model.name}
+        else 
+          hr
+          p Delete this body type?
+          form(method="POST", action='') 
+            div 
+              input(type='hidden', name='bodyTypeId', required='true', value=bodyType._id)
+            //-   input needed to send _id to middleware
+            button(type='submit') Delete
+
+
+    

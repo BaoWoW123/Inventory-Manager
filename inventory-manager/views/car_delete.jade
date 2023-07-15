@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1 #{car.year.year} #{car.make.name} #{car.model.name}
+        div(style='display:flex; gap:20px; padding:10px')
+          p Body types:&nbsp
+            each type, idx in car.bodyType
+              if (idx==car.bodyType.length - 1)
+                | #{type.type}
+              else
+                | #{type.type},&nbsp
+            p Price: $#{car.price}
+            p Stock: #{car.stock}
+        div=car.description
+        hr
+        p Delete this car?
+          form(method="POST", action='') 
+            div 
+              input(type='hidden', name='carId', required='true', value=car._id)
+            //-   input needed to send _id to middleware
+            button(type='submit') Delete
+
+
+    

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=year.year
+        div(style='display:flex;flex-direction:column; padding:10px')
+        if carsWithYear.length
+          ul 
+            h3 Remove or update the following cars with this year before deleting.
+            each car in carsWithYear
+              li
+                a(href=car.url) 
+                  h3 #{car.year.year} #{car.make.name} #{car.model.name}
+        else 
+          p Delete this year?
+          form(method="POST", action='') 
+            div 
+              input(type='hidden', name='yearId', required='true', value=year._id)
+            //-   input needed to send _id to middleware
+            button(type='submit') Delete
+
+
+    

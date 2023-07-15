@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=model.name
+        if carsWithModel.length
+          ul 
+            h3 Remove or update the following cars with this model before deleting.
+            each car in carsWithModel
+              li
+                a(href=car.url) 
+                  h3 #{car.year.year} #{car.make.name} #{car.model.name}
+        else 
+          p Delete this model?
+          form(method="POST", action='') 
+            div 
+              input(type='hidden', name='modelId', required='true', value=model._id)
+            //-   input needed to send _id to middleware
+            button(type='submit') Delete
+
+
+    

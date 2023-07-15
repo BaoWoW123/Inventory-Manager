@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .content
+    .detail   
+        h1=make.name
+        div(style='display:flex;flex-direction:column; padding:10px')
+          p Founded in #{make.year_founded}
+          p=make.description
+        if carsWithMake.length
+          ul 
+            h3 Remove or update the following cars with this make before deleting.
+            each car in carsWithMake
+              li
+                a(href=car.url) 
+                  h3 #{car.year.year} #{car.make.name} #{car.model.name}
+        else 
+          p Delete this make?
+          form(method="POST", action='') 
+            div 
+              input(type='hidden', name='makeId', required='true', value=make._id)
+            //-   input needed to send _id to middleware
+            button(type='submit') Delete
+
+
+    
