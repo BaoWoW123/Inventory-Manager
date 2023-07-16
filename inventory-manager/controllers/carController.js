@@ -138,9 +138,98 @@ exports.car_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.car_update_get = asyncHandler(async (req, res, next) => {
-  res.send("Car Update GET");
+    const [car, makes, models, years, bodyTypes] = await Promise.all([
+      Car.findById(req.params.id)
+        .populate(["make", "model", "year", "bodyType"])
+        .exec(),
+      Make.find().exec(),
+      Model.find().exec(),
+      Year.find().exec(),
+      BodyType.find().exec(),
+    ]);
+
+    if (car === null) {
+        const err = new Error('Car not found')
+        err.status = 404;
+        return next(err);
+    }
+
+    for (const bodyType of bodyTypes) {
+        for (const type of car.bodyType) {
+            if (bodyType._id.toString() === type._id.toString()) {
+                bodyType.checked = 'true'
+            }
+        }
+    }
+
+    res.render("car_form", {
+      title: "Update Car",
+      car: car,
+      makes: makes,
+      models: models,
+      years: years,
+      bodyTypes: bodyTypes,
+    });
+    
 });
 
-exports.car_update_post = asyncHandler(async (req, res, next) => {
-  res.send("Car Update POST");
-});
+exports.car_update_post = [
+    (req, res, next) => {
+        if (!(req.body.bodyType instanceof Array)) {
+          if (typeof req.body.bodyType === "undefined") req.body.bodyType = [];
+          else req.body.bodyType = new Array(req.body.bodyType);
+        }
+        next();
+      },
+    
+      body("make", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("model", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("year", "Year must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("bodyType", "Body type must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("stock", "Stock must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("price", "Price must be a number between 1 and 9,999,999").trim().isLength({ min: 1, max: 9999999 }).escape(),
+      body("description", "Description must be 1 to 500 characters").trim().isLength({ min: 3, max: 500 }).escape(),
+    
+      asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+    
+        const car = new Car({
+          make: req.body.make,
+          model: req.body.model,
+          price: req.body.price,
+          year: req.body.year,
+          description: req.body.description,
+          stock: req.body.stock,
+          bodyType: typeof req.body.bodyType === 'undefined' ? [] : req.body.bodyType,
+          _id: req.params.id
+        });
+    
+        if (!errors.isEmpty()) {
+          const [makes, models, years, bodyTypes] = await Promise.all([
+            Make.find().exec(),
+            Model.find().exec(),
+            Year.find().exec(),
+            BodyType.find().exec(),
+          ]);
+          //loop repopulates form with previous inputs
+          for (const bodyType of bodyTypes) {
+            if (car.bodyType.indexOf(bodyType._id) > -1) {
+              bodyType.checked = "true";
+            }
+          }
+    
+          res.render("car_form", {
+            title: "Update Car",
+            makes: makes,
+            models: models,
+            years: years,
+            bodyTypes: bodyTypes,
+            car: car,
+            errors: errors.array(),
+          });
+        } else {
+          const theCar = await Car.findByIdAndUpdate(req.params.id, car, {});
+          res.redirect(theCar.url);
+        }
+      }),
+    ];
