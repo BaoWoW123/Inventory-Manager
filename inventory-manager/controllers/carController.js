@@ -77,7 +77,7 @@ exports.car_create_post = [
   body("make", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
   body("model", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
   body("year", "Year must not be empty").trim().isLength({ min: 1 }).escape(),
-  body("bodyType", "Body type must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("bodyType", "Body type must not be empty").isArray({ min: 1 }).trim().escape(),
   body("stock", "Stock must not be empty").trim().isLength({ min: 1 }).escape(),
   body("price", "Price must be a number between 1 and 9,999,999").trim().isLength({ min: 1, max: 9999999 }).escape(),
   body("description", "Description must be 1 to 500 characters").trim().isLength({ min: 3, max: 500 }).escape(),
@@ -181,15 +181,14 @@ exports.car_update_post = [
         }
         next();
       },
-    
       body("make", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
       body("model", "Model must not be empty").trim().isLength({ min: 1 }).escape(),
       body("year", "Year must not be empty").trim().isLength({ min: 1 }).escape(),
-      body("bodyType", "Body type must not be empty").trim().isLength({ min: 1 }).escape(),
+      body("bodyType", "Body type must not be empty").isArray({ min: 1 }).trim().escape(),
       body("stock", "Stock must not be empty").trim().isLength({ min: 1 }).escape(),
       body("price", "Price must be a number between 1 and 9,999,999").trim().isLength({ min: 1, max: 9999999 }).escape(),
       body("description", "Description must be 1 to 500 characters").trim().isLength({ min: 3, max: 500 }).escape(),
-    
+
       asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
     
