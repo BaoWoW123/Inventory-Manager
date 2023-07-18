@@ -1,5 +1,5 @@
 body {
-  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
   background: linear-gradient(white, lightgray);
   display: flex;
   flex-direction: column;
@@ -14,6 +14,9 @@ body > h1:first-child {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-sizing: border-box;
+  border-top: 3px solid dodgerblue;
+  border-right: 3px solid dodgerblue;
 }
 
 .navBar > ul > li {
@@ -27,6 +30,7 @@ h1 {
   padding: 0;
   margin: 0;
 }
+
 ul {
   text-decoration: none;
   list-style: none;
@@ -37,15 +41,27 @@ a {
   font-size: larger;
 }
 
+input[type=checkbox] {
+transform: scale(2); 
+margin-right: 10px;
+}
 .contentWrapper {
   display: grid;
   grid-template-columns: 400px 1fr;
+  flex: 1;
+}
+.content, .form {
+  padding: 0px 20px;
 }
 
 .content {
   grid-column: 2/3;
 }
 
+.content > h1 {
+  border-bottom: 3px solid dodgerblue;
+  padding-bottom: 10px;
+}
 .contentList {
   padding: 0px 20px;
 }
@@ -63,11 +79,57 @@ a {
   display: flex;
 }
 
-.detail > h1,.form >h1 {
+.detail > h1 {
   border-bottom:1px solid black;
   padding-bottom: 10px;
 }
 
+.form>h1:first-child {
+  padding-bottom: 10px;
+  border-bottom: 3px solid dodgerblue;
+}
+
 form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
+}
+
+form input, form select {
+  padding: 10px 20px;
+  font-size: large;
+}
+
+form > button {
+  background-color: dodgerblue;
+  margin: auto;
+  font-size: larger;
+  padding: 10px 20px;
+  color: white;
+  margin-left: 0;
+}
+
+.bodyTypeList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 20px;
+  margin: auto;
+  gap: 10px;
+}
+ 
+.homeList {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 20px 0px;
+  text-align: center;
+  gap: 20px;
+}
+
+.homeList > li {
+  display: flex;
+  flex-direction: column;
+  background-color: lavender;
+  font-size: larger;
+  padding:10px;
 }

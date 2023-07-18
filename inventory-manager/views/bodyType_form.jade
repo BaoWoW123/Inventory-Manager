@@ -3,11 +3,13 @@ extends layout
 block content 
   .form 
     h1=title 
-    h2=bodyType.type
+    if (undefined !== bodyType)
+      h1=bodyType.type
     form(method='POST' action='')
       div
         label(for='bodyType') Type: 
         input(type='text', placeholder='Sedan, Coupe, etc.' name='type' value=(undefined===bodyType ? '' : bodyType.type))
+      div
         label(for='description') Description: 
         input(type='text', placeholder='Description here...' name='description' value=(undefined===bodyType ? '' : bodyType.description))
       button(type='submit') Submit 

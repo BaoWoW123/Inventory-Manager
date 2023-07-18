@@ -37,9 +37,9 @@ block content
           input(type='number', name='price', min=1, max=9999999, value=(undefined===car ? '' : car.price))
       div 
         label Body types: 
-        div 
+        div.bodyTypeList
           for bodyType in bodyTypes
-            div(style='display: inline')
+            div
               input(type='checkbox', name='bodyType', value=bodyType._id, checked=bodyType.checked)
               label(for=bodyType._id) #{bodyType.type}
       div 
@@ -50,7 +50,8 @@ block content
       div
         label(for='description') Description: 
         input(type='text', placeholder='Description here...' name='description' value=(undefined===car ? '' : car.description))
-      button(type='submit') Submit 
+      button(type='submit') 
+        b Submit 
 
 
     if errors 
