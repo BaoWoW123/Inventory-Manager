@@ -98,9 +98,9 @@ exports.year_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.year_update_get = asyncHandler(async (req, res, next) => {
-    res.send('Year Update GET')
+    res.send('Year Update GET, not implemented since not useful')
 })
 
 exports.year_update_post = asyncHandler(async (req, res, next) => {
-    res.send('Year Update POST')
+    res.send('Year Update POST, not implemented since not useful')
 })

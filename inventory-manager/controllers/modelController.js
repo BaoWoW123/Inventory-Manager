@@ -89,9 +89,40 @@ exports.model_delete_post = asyncHandler(async (req, res, next) => {
 })
 
 exports.model_update_get = asyncHandler(async (req, res, next) => {
-    res.send('model Update GET')
+  const model = await Model.findById(req.params.id);
+
+  if (model === null) {
+    const err = new Error('Model not found')
+    err.status = 404;
+    return next(err)
+  }
+  res.render('model_form', {title: 'Update Model', model:model})
 })
 
-exports.model_update_post = asyncHandler(async (req, res, next) => {
-    res.send('model Update POST')
-})
+exports.model_update_post = [
+  body("name", "Make must have between 3 to 20 characters")
+    .trim()
+    .isLength({ min: 3, max: 20 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const model = new Model({
+      name: req.body.name,
+      _id:req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      //if errors, rerender with errors shown
+      res.render("model_form", {
+        title: "Update Model",
+        model: model,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+        const theModel = await Model.findByIdAndUpdate(req.params.id, model, {})
+        res.redirect(theModel.url);
+    }
+  }),
+];

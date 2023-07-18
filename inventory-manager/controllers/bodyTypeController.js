@@ -94,9 +94,45 @@ exports.bodyType_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.bodyType_update_get = asyncHandler(async (req, res, next) => {
-  res.send("bodyType Update GET");
+    const bodyType = await BodyType.findById(req.params.id)
+    
+    if (bodyType === null) {
+        const err = new Error('Body type not found')
+        err.status = 404;
+        return next(err);
+    }
+    res.render("bodyType_form", { title: "Update Body Type", bodyType:bodyType });
 });
 
-exports.bodyType_update_post = asyncHandler(async (req, res, next) => {
-  res.send("bodyType Update POST");
-});
+exports.bodyType_update_post = [
+  body("type", "Body type must have between 3 to 20 characters")
+    .trim()
+    .isLength({ min: 3, max: 20 })
+    .escape(),
+
+  body("description", "Description must have 3 to 500 characters")
+    .trim()
+    .isLength({ min: 3, max: 500 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const bodyType = new BodyType({
+      type: req.body.type,
+      description: req.body.description,
+      _id: req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      //if errors, rerender with errors shown
+      res.render("bodyType_form", {
+        title: "Update Body Type",
+        bodyType: bodyType,
+        errors: errors.array(),
+      });
+      return;
+    } else {        
+        const theBodyType = await BodyType.findByIdAndUpdate(req.params.id, bodyType, {});
+        res.redirect(theBodyType.url);
+  }}),
+];

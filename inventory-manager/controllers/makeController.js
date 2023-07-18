@@ -101,9 +101,51 @@ exports.make_delete_post = asyncHandler(async (req, res, next) => {
     }
 });
 exports.make_update_get = asyncHandler(async (req, res, next) => {
-  res.send("Make Update GET");
+  const make = await Make.findById(req.params.id);
+  if (make === null) {
+    const err = new Error('Model not found')
+    err.status = 404;
+    return next(err)
+  }
+  res.render("make_form", { title: "Update Make", make:make });
 });
 
-exports.make_update_post = asyncHandler(async (req, res, next) => {
-  res.send("Make Update POST");
-});
+exports.make_update_post = [
+  body("name", "Make must have between 3 to 20 characters")
+    .trim()
+    .isLength({ min: 3, max: 20 })
+    .escape(),
+
+  body("description", "Description must have 3 to 500 characters")
+    .trim()
+    .isLength({ min: 3, max: 500 })
+    .escape(),
+
+  body("year", "Must be a number between 1 to 9999")
+    .trim()
+    .isLength({ min: 1, max: 9999 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const make = new Make({
+      name: req.body.name,
+      description: req.body.description,
+      year_founded: req.body.year,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      //if errors, rerender with errors shown
+      res.render("make_form", {
+        title: "Update Make",
+        make: make,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const theMake = await Make.findByIdAndUpdate(req.params.id, make, {});
+      res.redirect(theMake.url);
+    }
+  }),
+];
